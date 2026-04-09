@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # NYC Tourism Data Integration Starter Scripts
 
 This bundle provides a clean 2025 pilot pipeline for integrating:
@@ -182,3 +183,7 @@ For the first proof of concept, start with:
 - Central Park daily weather
 
 That is the fastest path to a working 2025 `zone × date` prototype.
+=======
+# DE-Final-Project-Group-Metropolitan
+Revisit the open urban data landscape in NYC through a joinability-driven case study of tourism. 
+>>>>>>> 8c4c4fb006b3cbed947fe8baf1c46510661eb302
