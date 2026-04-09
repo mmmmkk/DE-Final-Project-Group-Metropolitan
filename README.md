@@ -1,5 +1,7 @@
-<<<<<<< HEAD
-# NYC Tourism Data Integration Starter Scripts
+# DE-Final-Project-Group-Metropolitan
+Revisit the open urban data landscape in NYC through a joinability-driven case study of tourism. 
+
+## Integration Starter Scripts
 
 This bundle provides a clean 2025 pilot pipeline for integrating:
 - **NYC TLC trip data** (monthly Parquet files)
