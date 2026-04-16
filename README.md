@@ -1,5 +1,7 @@
-<<<<<<< HEAD
-# NYC Tourism Data Integration Starter Scripts
+# DE-Final-Project-Group-Metropolitan
+Revisit the open urban data landscape in NYC through a joinability-driven case study of tourism. 
+
+## Integration Starter Scripts
 
 This bundle provides a clean 2025 pilot pipeline for integrating:
 - **NYC TLC trip data** (monthly Parquet files)
@@ -49,6 +51,11 @@ python download_tlc_2025.py \
   --modes yellow \
   --aggregate
 ```
+These data files may consumes a lot of memory so maybe start from one TLC source first. Or if raw files are already existed, 
+
+```bash
+python download_tlc_2025.py --skip-download --aggregate --modes yellow
+```
 
 Multiple modes:
 
@@ -74,7 +81,7 @@ Example:
 
 ```bash
 python build_poi_zone_features.py \
-  --poi-csv data/raw/poi/commonplace_2026-04-04.csv \
+  --poi-csv data/raw/poi/CommonPlace_20260408.csv \
   --zones-file data/raw/taxi_zones/taxi_zones.shp \
   --output-file data/processed/poi/poi_zone_features.parquet \
   --poi-name-col "FEATURE NAME"
@@ -90,18 +97,7 @@ If the geometry columns are not inferred automatically, pass them explicitly:
 
 ```bash
 python build_poi_zone_features.py \
-  --poi-csv data/raw/poi/commonplace.csv \
-  --zones-file data/raw/taxi_zones/taxi_zones.shp \
-  --output-file data/processed/poi/poi_zone_features.parquet \
-  --lat-col latitude \
-  --lon-col longitude
-```
-
-or
-
-```bash
-python build_poi_zone_features.py \
-  --poi-csv data/raw/poi/commonplace.csv \
+  --poi-csv data/raw/poi/CommonPlace_20260408.csv \
   --zones-file data/raw/taxi_zones/taxi_zones.shp \
   --output-file data/processed/poi/poi_zone_features.parquet \
   --point-col the_geom
@@ -183,7 +179,13 @@ For the first proof of concept, start with:
 - Central Park daily weather
 
 That is the fastest path to a working 2025 `zone × date` prototype.
-=======
-# DE-Final-Project-Group-Metropolitan
-Revisit the open urban data landscape in NYC through a joinability-driven case study of tourism. 
->>>>>>> 8c4c4fb006b3cbed947fe8baf1c46510661eb302
+
+To display the final parquet:
+
+```bash
+python -c "import pandas as pd; print(pd.read_parquet('data/processed/final/zone_date_master_2025.parquet').head(30))"
+```
+In the final combined table, the date attribute comes from tlc trips, where there are outliers (e.g. date in 2008). These should be treated in later cleaning process.
+```bash
+python -c "import pandas as pd; print(pd.read_parquet('data/processed/tlc/yellow_zone_date_2025.parquet').head(20))"
+```
