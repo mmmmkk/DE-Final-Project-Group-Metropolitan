@@ -106,6 +106,10 @@ def load_poi(args: argparse.Namespace) -> gpd.GeoDataFrame:
     poi["latitude"] = lat
     poi["longitude"] = lon
     poi = poi.dropna(subset=["latitude", "longitude"])
+    poi = poi[
+    poi["latitude"].between(40.4, 41.0, inclusive="both") &
+    poi["longitude"].between(-74.3, -73.6, inclusive="both")
+    ]
     poi["feature_name"] = poi[args.poi_name_col].astype(str).str.strip() if args.poi_name_col in poi.columns else ""
     poi["feature_name_norm"] = poi["feature_name"].map(normalize_text)
     poi["lon_round"] = poi["longitude"].round(6)
@@ -133,6 +137,9 @@ def main() -> int:
     joined = gpd.sjoin(poi, zones, how="left", predicate="within")
     joined = joined.rename(columns={"LocationID": "taxi_zone_id"})
     joined = joined.dropna(subset=["taxi_zone_id"])
+    print("poi rows before spatial join:", len(poi))
+    print("poi rows after spatial join:", len(joined))
+    print("matched taxi zones:", joined["taxi_zone_id"].notna().sum())
 
     zone_counts = (
         joined.groupby("taxi_zone_id")

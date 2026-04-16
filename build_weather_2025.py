@@ -63,12 +63,16 @@ def clean_weather(df: pd.DataFrame) -> pd.DataFrame:
         out["tmin"] = df["TMIN"]
     if "PRCP" in df.columns:
         out["prcp"] = df["PRCP"]
+        out.loc[out["prcp"] < 0, "prcp"] = pd.NA # sanity check
     if "AWND" in df.columns:
         out["awnd"] = df["AWND"]
+        out.loc[out["awnd"] < 0, "awnd"] = pd.NA
     if "SNOW" in df.columns:
         out["snow"] = df["SNOW"]
+        out.loc[out["snow"] < 0, "snow"] = pd.NA
 
     if {"tmax", "tmin"}.issubset(out.columns):
+        out.loc[out["tmax"] < out["tmin"], ["tmax", "tmin"]] = pd.NA
         out["temp_avg"] = (out["tmax"] + out["tmin"]) / 2
     if "prcp" in out.columns:
         out["rainy_day"] = out["prcp"].fillna(0).gt(0).astype(int)
@@ -76,7 +80,9 @@ def clean_weather(df: pd.DataFrame) -> pd.DataFrame:
     if "temp_avg" in out.columns:
         out["pleasant_temp_day"] = out["temp_avg"].between(15, 27, inclusive="both").astype(int)
 
-    out = out.sort_values("date").reset_index(drop=True)
+
+    out = out.sort_values("date").drop_duplicates(subset=["date"], keep="last").reset_index(drop=True)
+    #out = out.sort_values("date").reset_index(drop=True)
     return out
 
 
