@@ -90,20 +90,10 @@ The script supports two common layouts:
 
 If the geometry columns are not inferred automatically, pass them explicitly:
 
-```bash
-python build_poi_zone_features.py \
-  --poi-csv data/raw/poi/commonplace.csv \
-  --zones-file data/raw/taxi_zones/taxi_zones.shp \
-  --output-file data/processed/poi/poi_zone_features.parquet \
-  --lat-col latitude \
-  --lon-col longitude
-```
-
-or
 
 ```bash
 python build_poi_zone_features.py \
-  --poi-csv data/raw/poi/commonplace.csv \
+  --poi-csv data/raw/poi/CommonPlace_20260408.csv \
   --zones-file data/raw/taxi_zones/taxi_zones.shp \
   --output-file data/processed/poi/poi_zone_features.parquet \
   --point-col the_geom
