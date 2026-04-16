@@ -51,11 +51,6 @@ python download_tlc_2025.py \
   --modes yellow \
   --aggregate
 ```
-These data files may consumes a lot of memory so maybe start from one TLC source first. Or if raw files are already existed, 
-
-```bash
-python download_tlc_2025.py --skip-download --aggregate --modes yellow
-```
 
 Multiple modes:
 
@@ -81,7 +76,7 @@ Example:
 
 ```bash
 python build_poi_zone_features.py \
-  --poi-csv data/raw/poi/CommonPlace_20260408.csv \
+  --poi-csv data/raw/poi/commonplace_2026-04-04.csv \
   --zones-file data/raw/taxi_zones/taxi_zones.shp \
   --output-file data/processed/poi/poi_zone_features.parquet \
   --poi-name-col "FEATURE NAME"
@@ -94,6 +89,7 @@ The script supports two common layouts:
 - a point/WKT-style column such as `POINT (-73.98 40.75)`
 
 If the geometry columns are not inferred automatically, pass them explicitly:
+
 
 ```bash
 python build_poi_zone_features.py \
@@ -171,21 +167,8 @@ python build_zone_date_master.py \
 - merges TLC facts, POI zone features, and weather
 - outputs a single analytical table keyed by `date` and `taxi_zone_id`
 
-## Recommended first run
+## The first run folder uses:
 
-For the first proof of concept, start with:
 - Yellow Taxi only
 - CommonPlace POI features
 - Central Park daily weather
-
-That is the fastest path to a working 2025 `zone × date` prototype.
-
-To display the final parquet:
-
-```bash
-python -c "import pandas as pd; print(pd.read_parquet('data/processed/final/zone_date_master_2025.parquet').head(30))"
-```
-In the final combined table, the date attribute comes from tlc trips, where there are outliers (e.g. date in 2008). These should be treated in later cleaning process.
-```bash
-python -c "import pandas as pd; print(pd.read_parquet('data/processed/tlc/yellow_zone_date_2025.parquet').head(20))"
-```
