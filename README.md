@@ -172,3 +172,53 @@ python build_zone_date_master.py \
 - Yellow Taxi only
 - CommonPlace POI features
 - Central Park daily weather
+
+## 6) Hypothesis 1: Taxi Demand Drivers Analysis
+
+This notebook analyzes the factors influencing taxi demand across NYC zones using the integrated `zone × date` dataset.
+
+### Objective
+
+To evaluate how **weather conditions** and **POI density** impact taxi trip volume.
+
+### Variables
+
+- **Dependent Variable (DV):**
+  - `trips_pickup_yellow`
+
+- **Independent Variables (IV):**
+  - Weather: `rainy_day`, `heavy_rain_day`, `temp_avg`, `pleasant_temp_day`
+  - Spatial: `poi_count_total`
+
+### Analytical Approach
+
+The analysis is performed at multiple granularities:
+
+- **Zone × Date (base level)**
+- **Zone-level aggregation (spatial patterns)**
+- **City-level aggregation (temporal trends)**
+
+### Key Findings
+
+- Taxi demand increases on rainy and heavy rain days  
+- Temperature has negligible impact on demand  
+- POI density shows a weak relationship with demand  
+- Demand exhibits strong temporal variability  
+
+### Notebook
+hypothesis_1_analysis.ipynb
+
+
+### Run the notebook
+
+Open the notebook using your preferred environment (VS Code or Jupyter).
+
+**In VS Code:**
+- Open the project folder  
+- Open `hypothesis_1_analysis.ipynb`  
+- Select the `.venv` kernel  
+- Run all cells  
+
+**In Jupyter:**
+
+jupyter notebook
