@@ -3,5 +3,5 @@ requests>=2.31
 pyarrow>=14.0
 geopandas>=0.14
 shapely>=2.0
-#fiona>=1.9 SN
+fiona>=1.9 # required for geopandas (may need manual install on Windows)
 pyproj>=3.6
