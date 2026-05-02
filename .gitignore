@@ -1,0 +1,5 @@
+db/*
+outputs/*
+!db/.gitkeep
+!outputs/.gitkeep
+.venv/
