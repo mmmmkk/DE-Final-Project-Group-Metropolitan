@@ -17,7 +17,14 @@ from typing import Iterable
 
 import pandas as pd
 
-VALID_MODES = ["yellow", "green", "fhv", "hvfhv"]
+VALID_MODES = ["yellow", "green", "fhv", "fhvhv"]
+
+TAXI_TYPE_MAP = {
+    "yellow": "street_hail",
+    "green":  "street_hail",
+    "fhv":    "booked",
+    "fhvhv":  "booked",
+}
 
 
 def month_strings() -> list[str]:
@@ -27,7 +34,7 @@ def month_strings() -> list[str]:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--year", type=int, default=2025)
-    parser.add_argument("--modes", nargs="+", default=["yellow"], choices=VALID_MODES)
+    parser.add_argument("--modes", nargs="+", default=["yellow", "green", "fhv", "fhvhv"], choices=VALID_MODES)
     parser.add_argument("--raw-dir", default="data/raw/tlc")
     parser.add_argument("--processed-dir", default="data/processed/tlc")
     return parser.parse_args()
@@ -73,6 +80,7 @@ def normalize_mode_columns(df: pd.DataFrame, mode: str) -> pd.DataFrame:
 
     out = df[keep].copy()
     out["trip_mode"] = mode
+    out["taxi_type"] = TAXI_TYPE_MAP[mode]
 
     if "pickup_datetime" in out.columns:
         out["pickup_datetime"] = pd.to_datetime(out["pickup_datetime"], errors="coerce")
@@ -165,7 +173,7 @@ def clean_tlc_records(df: pd.DataFrame, year: int) -> pd.DataFrame:
 
 def aggregate_zone_date(df: pd.DataFrame) -> pd.DataFrame:
     base = df.dropna(subset=["date", "pickup_location_id"])
-    group_cols = ["date", "pickup_location_id", "trip_mode"]
+    group_cols = ["date", "pickup_location_id", "trip_mode", "taxi_type"]
 
     counts = (
         base.groupby(group_cols, dropna=False)
