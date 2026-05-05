@@ -50,10 +50,32 @@ def main() -> int:
 
     # If multiple modes are stacked long, pivot to wide on trip_mode if present.
     if "trip_mode" in tlc.columns:
-        value_cols = [c for c in tlc.columns if c not in {"date", "taxi_zone_id", "trip_mode"}]
-        tlc = tlc.pivot_table(index=["date", "taxi_zone_id"], columns="trip_mode", values=value_cols, aggfunc="first")
-        tlc.columns = [f"{metric}_{mode}" for metric, mode in tlc.columns]
-        tlc = tlc.reset_index()
+        non_metric = {"date", "taxi_zone_id", "trip_mode", "taxi_type"}
+        value_cols = [c for c in tlc.columns if c not in non_metric]
+
+        mode_pivot = tlc.pivot_table(
+            index=["date", "taxi_zone_id"], columns="trip_mode",
+            values=value_cols, aggfunc="first",
+        )
+        mode_pivot.columns = [f"{metric}_{mode}" for metric, mode in mode_pivot.columns]
+        mode_pivot = mode_pivot.reset_index()
+
+        # taxi_type level trip counts (street_hail vs booked)
+        if "taxi_type" in tlc.columns and "trips_pickup" in tlc.columns:
+            type_counts = (
+                tlc.groupby(["date", "taxi_zone_id", "taxi_type"])["trips_pickup"]
+                .sum()
+                .reset_index()
+            )
+            type_pivot = type_counts.pivot_table(
+                index=["date", "taxi_zone_id"], columns="taxi_type",
+                values="trips_pickup", aggfunc="sum",
+            )
+            type_pivot.columns = [f"trips_pickup_{t}" for t in type_pivot.columns]
+            type_pivot = type_pivot.reset_index()
+            tlc = mode_pivot.merge(type_pivot, on=["date", "taxi_zone_id"], how="left")
+        else:
+            tlc = mode_pivot
 
     poi = read_table(args.poi_file)
     if "taxi_zone_id" in poi.columns:

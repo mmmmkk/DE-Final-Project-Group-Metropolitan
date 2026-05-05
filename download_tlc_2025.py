@@ -18,7 +18,7 @@ import pandas as pd
 import requests
 
 BASE_URL = "https://d37ci6vzurychx.cloudfront.net/trip-data"
-VALID_MODES = ["yellow", "green", "fhv", "hvfhv"]
+VALID_MODES = ["yellow", "green", "fhv", "fhvhv"]
 
 
 def month_strings() -> list[str]:

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Virtual environment
 .venv/
 
@@ -11,3 +12,10 @@ __pycache__/
 # OS / editor
 .DS_Store
 .vscode/
+=======
+db/*
+outputs/*
+!db/.gitkeep
+!outputs/.gitkeep
+.venv/
+>>>>>>> df4b520486cf682d8ae6f500950894deebd297eb

@@ -79,6 +79,18 @@ def clean_weather(df: pd.DataFrame) -> pd.DataFrame:
         out["heavy_rain_day"] = out["prcp"].fillna(0).ge(10).astype(int)
     if "temp_avg" in out.columns:
         out["pleasant_temp_day"] = out["temp_avg"].between(15, 27, inclusive="both").astype(int)
+    if "awnd" in out.columns:
+        # windy = avg wind speed > 3.5 m/s (~12.6 km/h), above 75th pct for NYC
+        out["windy_day"] = out["awnd"].fillna(0).gt(3.5).astype(int)
+
+    # NYC-calibrated seasons: March still feels like winter, September still feels like summer
+    month = pd.to_datetime(out["date"]).dt.month
+    out["season"] = month.map({
+        12: "winter", 1: "winter", 2: "winter", 3: "winter",
+        4:  "spring", 5: "spring",
+        6:  "summer", 7: "summer", 8: "summer", 9: "summer",
+        10: "fall",   11: "fall",
+    })
 
 
     out = out.sort_values("date").drop_duplicates(subset=["date"], keep="last").reset_index(drop=True)
