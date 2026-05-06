@@ -81,7 +81,7 @@ def clean_weather(df: pd.DataFrame) -> pd.DataFrame:
         out["pleasant_temp_day"] = out["temp_avg"].between(15, 27, inclusive="both").astype(int)
     if "awnd" in out.columns:
         # windy = avg wind speed > 3.5 m/s (~12.6 km/h), above 75th pct for NYC
-        out["windy_day"] = out["awnd"].fillna(0).gt(3.5).astype(int)
+        out["windy_day"] = out["awnd"].gt(3.5).where(out["awnd"].notna()).astype("Int64")
 
     # NYC-calibrated seasons: March still feels like winter, September still feels like summer
     month = pd.to_datetime(out["date"]).dt.month
