@@ -68,7 +68,7 @@ _HOLIDAYS: dict[int, list[tuple[str, str]]] = {
         ("2020-01-20", "Martin Luther King Jr. Day"),
         ("2020-02-17", "Presidents' Day"),
         ("2020-05-25", "Memorial Day"),
-        ("2020-07-03", "Independence Day (observed)"),
+        ("2020-07-03", "Independence Day"),
         ("2020-09-07", "Labor Day"),
         ("2020-10-12", "Columbus Day"),
         ("2020-11-11", "Veterans Day"),
